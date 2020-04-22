@@ -2,8 +2,14 @@
 #include <iostream>
 #include <stdlib.h>     /* srand, rand */
 #include <cassert>
+#include <iostream>
+#include <string>
 
-Benchmark::Benchmark(const unsigned int nOperations) {
+Benchmark::Benchmark(const unsigned int nOperations): objOstream(std::cout) {
+    m_nOperations = nOperations;
+}
+
+Benchmark::Benchmark(const unsigned int nOperations, std::ostream & ostreamO):objOstream(ostreamO) {
     m_nOperations = nOperations;
 }
 
@@ -27,9 +33,9 @@ void Benchmark::SingleAllocation(Allocator* allocator, const std::size_t size, c
 }
 
 void Benchmark::SingleFree(Allocator* allocator, const std::size_t size, const std::size_t alignment) {
-    std::cout << "BENCHMARK: ALLOCATION/FREE" << std::endl;
-    std::cout << "\tSize:     \t" << size << std::endl;
-    std::cout << "\tAlignment\t" << alignment << std::endl;
+    //std::cout << "BENCHMARK: ALLOCATION/FREE" << std::endl;
+    //std::cout << "\tSize:     \t" << size << std::endl;
+    //std::cout << "\tAlignment\t" << alignment << std::endl;
 
     void* addresses[m_nOperations];
 
@@ -72,7 +78,7 @@ void Benchmark::MultipleFree(Allocator* allocator, const std::vector<std::size_t
 void Benchmark::RandomAllocation(Allocator* allocator, const std::vector<std::size_t>& allocationSizes, const std::vector<std::size_t>& alignments) {
     srand(1);
 
-    std::cout << "\tBENCHMARK: ALLOCATION" << std::endl;
+    //std::cout << "\tBENCHMARK: ALLOCATION" << std::endl;
 
     setTimer(m_start);
     std::size_t allocation_size;
@@ -95,7 +101,7 @@ void Benchmark::RandomAllocation(Allocator* allocator, const std::vector<std::si
 void Benchmark::RandomFree(Allocator* allocator, const std::vector<std::size_t>& allocationSizes, const std::vector<std::size_t>& alignments) {
     srand(1);
 
-    std::cout << "\tBENCHMARK: ALLOCATION/FREE" << std::endl;
+    //std::cout << "\tBENCHMARK: ALLOCATION/FREE" << std::endl;
 
     setTimer(m_start);
 
@@ -144,15 +150,17 @@ const double Benchmark::calculateElapsedTime() const {
     return time_msec;
 }
 
+
+
 void Benchmark::printResults(const BenchmarkResults& results) const {
     //std::cout << "\tRESULTS:" << std::endl;
-    std::cout << "\t\tOperations:    \t" << results.nOperations << std::endl;
-    std::cout << "\t\tTime elapsed:  \t" << results.elapsedTime << " ms" << std::endl;
+    objOstream << "\t\tOperations:    \t" << results.nOperations << std::endl;
+    objOstream << "\t\tTime elapsed:  \t" << results.elapsedTime << " ms" << std::endl;
     //std::cout << "\t\tOp per sec:    \t" << results.operationsPerSec << " ops/ms" << std::endl;
     //std::cout << "\t\tTimer per op:  \t" << results.timePerOperation << " ms/ops" << std::endl;
-    std::cout << "\t\tMemory peak:   \t" << results.memoryPeak << " bytes" << std::endl;
+    objOstream << "\t\tMemory peak:   \t" << results.memoryPeak << " bytes" << std::endl;
 
-    std::cout << std::endl;
+    objOstream << std::endl;
 }
 
 const BenchmarkResults Benchmark::buildResults(const unsigned int nOperations, const double elapsedTime, const std::size_t memoryPeak) const {

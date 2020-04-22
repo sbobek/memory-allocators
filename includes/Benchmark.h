@@ -4,6 +4,8 @@
 #include <time.h> // timespec
 #include <cstddef> // std::size_t
 #include <vector>
+#include <string>
+#include <iostream>
 #include "Allocator.h" // base class allocator
 
 struct BenchmarkResults {
@@ -17,6 +19,7 @@ struct BenchmarkResults {
 class Benchmark {
 public:
 	Benchmark(const unsigned int nOperations);
+	Benchmark(const unsigned int nOperations, std::ostream & ostreamO);
 
 	void SingleAllocation(Allocator* allocator, const std::size_t size, const std::size_t alignment);
 	void SingleFree(Allocator* allocator, const std::size_t size, const std::size_t alignment);
@@ -26,6 +29,7 @@ public:
 
 	void RandomAllocation(Allocator* allocator, const std::vector<std::size_t>& allocationSizes, const std::vector<std::size_t>& alignments);
 	void RandomFree(Allocator* allocator, const std::vector<std::size_t>& allocationSizes, const std::vector<std::size_t>& alignments);
+
 private:
 	void printResults(const BenchmarkResults& results) const;
 	void setTimer(timespec& timer);
@@ -36,6 +40,7 @@ private:
 private:
 	unsigned int m_nOperations;
 	timespec m_start, m_end;
+	std::ostream & objOstream;
 };
 
 #endif /* BENCHMARK_H */

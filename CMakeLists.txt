@@ -1,6 +1,8 @@
 cmake_minimum_required (VERSION 3.5)
 project (memory-allocators LANGUAGES CXX)
 
+set(CMAKE_CXX_STANDARD 11)
+
 set(SOURCES src/Allocator.cpp
    	src/CAllocator.cpp
    	src/LinearAllocator.cpp
@@ -12,4 +14,4 @@ set(SOURCES src/Allocator.cpp
 
 add_executable(main ${SOURCES})
 target_include_directories(main PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/includes)
-target_compile_features(main PRIVATE cxx_std_11)
+#target_compile_features(main PRIVATE cpp_std_11)
