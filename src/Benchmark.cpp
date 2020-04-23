@@ -28,7 +28,7 @@ void Benchmark::SingleAllocation(Allocator* allocator, const std::size_t size, c
     }
     setTimer(m_end);
 
-    BenchmarkResults results = buildResults(m_nOperations, calculateElapsedTime(), allocator->m_peak);
+    BenchmarkResults results = buildResults(m_nOperations, calculateElapsedTime(), allocator->m_peak,allocator->GetName(), size, alignment);
     printResults(results);
 }
 
@@ -55,7 +55,7 @@ void Benchmark::SingleFree(Allocator* allocator, const std::size_t size, const s
 
     setTimer(m_end);
 
-    BenchmarkResults results = buildResults(m_nOperations, calculateElapsedTime(), allocator->m_peak);
+    BenchmarkResults results = buildResults(m_nOperations, calculateElapsedTime(), allocator->m_peak, allocator->GetName(), size, alignment);
     printResults(results);
 }
 
@@ -93,7 +93,7 @@ void Benchmark::RandomAllocation(Allocator* allocator, const std::vector<std::si
     }
     setTimer(m_end);
 
-    BenchmarkResults results = buildResults(m_nOperations, calculateElapsedTime(), allocator->m_peak);
+    BenchmarkResults results = buildResults(m_nOperations, calculateElapsedTime(), allocator->m_peak,allocator->GetName(), 0, 0);
     printResults(results);
 
 }
@@ -124,7 +124,7 @@ void Benchmark::RandomFree(Allocator* allocator, const std::vector<std::size_t>&
 
     setTimer(m_end);
 
-    BenchmarkResults results = buildResults(m_nOperations, calculateElapsedTime(), allocator->m_peak);
+    BenchmarkResults results = buildResults(m_nOperations, calculateElapsedTime(), allocator->m_peak,allocator->GetName(), 0, 0);
     printResults(results);
 
 }
@@ -154,16 +154,20 @@ const double Benchmark::calculateElapsedTime() const {
 
 void Benchmark::printResults(const BenchmarkResults& results) const {
     //std::cout << "\tRESULTS:" << std::endl;
-    objOstream << "\t\tOperations:    \t" << results.nOperations << std::endl;
-    objOstream << "\t\tTime elapsed:  \t" << results.elapsedTime << " ms" << std::endl;
+    //objOstream << "\t\tOperations:    \t" << results.nOperations << std::endl;
+    //objOstream << "\t\tTime elapsed:  \t" << results.elapsedTime << " ms" << std::endl;
     //std::cout << "\t\tOp per sec:    \t" << results.operationsPerSec << " ops/ms" << std::endl;
     //std::cout << "\t\tTimer per op:  \t" << results.timePerOperation << " ms/ops" << std::endl;
-    objOstream << "\t\tMemory peak:   \t" << results.memoryPeak << " bytes" << std::endl;
+    //objOstream << "\t\tMemory peak:   \t" << results.memoryPeak << " bytes" << std::endl;
+    
+    objOstream << results.nOperations <<","<<results.elapsedTime << "," <<results.operationsPerSec << "," << results.timePerOperation <<"," << results.memoryPeak <<",";
+    objOstream << results.allocatorName << "," << results.allocationSize <<"," << results.alignment;
 
     objOstream << std::endl;
 }
 
-const BenchmarkResults Benchmark::buildResults(const unsigned int nOperations, const double elapsedTime, const std::size_t memoryPeak) const {
+const BenchmarkResults Benchmark::buildResults(const unsigned int nOperations, const double elapsedTime, const std::size_t memoryPeak, const std::string name,
+                                                   const std::size_t allocationSize,    const std::size_t alignment) const {
     BenchmarkResults results;
 
     results.nOperations = nOperations;
@@ -171,6 +175,10 @@ const BenchmarkResults Benchmark::buildResults(const unsigned int nOperations, c
     results.operationsPerSec = results.nOperations / results.elapsedTime;
     results.timePerOperation = results.elapsedTime / results.nOperations;
     results.memoryPeak = memoryPeak;
+    
+    results.allocatorName=name;
+    results.allocationSize=allocationSize;
+    results.alignment=alignment;
 
     return results;
 }

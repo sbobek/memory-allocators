@@ -2,6 +2,7 @@
 #define STACKALLOCATOR_H
 
 #include "Allocator.h"
+#include <string>
 
 class StackAllocator : public Allocator {
 protected:
@@ -19,6 +20,8 @@ public:
     virtual void Init() override;
 
     virtual void Reset();
+    
+    virtual std::string GetName(){return "StackAllocator";};
 private:
     StackAllocator(StackAllocator &stackAllocator);
 

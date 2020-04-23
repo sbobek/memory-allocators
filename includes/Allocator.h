@@ -2,6 +2,8 @@
 #define ALLOCATOR_H
 
 #include <cstddef> // size_t
+#include <string>
+
 
 class Allocator {
 protected:
@@ -20,6 +22,8 @@ public:
     virtual void Init() = 0;
 
     friend class Benchmark;
+    
+    virtual std::string GetName() = 0;
 };
 
 #endif /* ALLOCATOR_H */

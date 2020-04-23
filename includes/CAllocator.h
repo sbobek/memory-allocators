@@ -1,6 +1,7 @@
 #ifndef CALLOCATOR_H
 #define CALLOCATOR_H
 
+#include <string>
 #include "Allocator.h"
 
 class CAllocator : public Allocator {
@@ -14,6 +15,8 @@ public:
 	virtual void Free(void* ptr) override;
 
 	virtual void Init() override;
+	
+	virtual std::string GetName(){return "CAllocator";};
 };
 
 #endif /* CALLOCATOR_H */

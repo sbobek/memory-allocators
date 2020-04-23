@@ -13,7 +13,10 @@ struct BenchmarkResults {
 	double elapsedTime;
 	float operationsPerSec;
 	float timePerOperation;
-        int memoryPeak;
+    int memoryPeak;
+    std::string allocatorName;
+    std::size_t allocationSize;
+    std::size_t alignment;
 };
 
 class Benchmark {
@@ -36,7 +39,7 @@ private:
 	void RandomAllocationAttr(const std::vector<std::size_t>& allocationSizes, const std::vector<std::size_t>& alignments, std::size_t & size, std::size_t & alignment);
 
 	const double calculateElapsedTime() const;
-	const BenchmarkResults buildResults(const unsigned int nOperations, const double elapsedTime, const std::size_t memoryUsed) const;
+	const BenchmarkResults buildResults(const unsigned int nOperations, const double elapsedTime, const std::size_t memoryUsed, const std::string name, const std::size_t size, const std::size_t alignment) const;
 private:
 	unsigned int m_nOperations;
 	timespec m_start, m_end;

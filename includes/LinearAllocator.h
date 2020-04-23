@@ -19,6 +19,8 @@ public:
 	virtual void Init() override;
 
 	virtual void Reset();
+	
+	virtual std::string GetName(){return "LinearAllocator";};
 private:
 	LinearAllocator(LinearAllocator &linearAllocator);
 };

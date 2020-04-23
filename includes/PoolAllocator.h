@@ -22,6 +22,8 @@ public:
     virtual void Init() override;
 
     virtual void Reset();
+    
+    virtual std::string GetName(){return "PoolAllocator";};
 private:
     PoolAllocator(PoolAllocator &poolAllocator);
 
